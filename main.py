@@ -60,16 +60,19 @@ def alien_reverse(group) -> None:
 
 # pygame setup
 pygame.init()
-screen = pygame.display.set_mode((1550, 1144))
+screen = pygame.display.set_mode((950, 990))
 clock = pygame.time.Clock()
 frame_time = 0  # Seconds since last frame
 
 screen_centre = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 
-# TODO: Consider using a vignette layer
 background_image = pygame.image.load('graphics/artwork/background.png').convert_alpha()
-background_image = pygame.transform.rotozoom(background_image, 90, 2)
+background_image = pygame.transform.rotozoom(background_image, 90, 1)
 background_image_rect = background_image.get_rect()
+
+bezel_image = pygame.image.load('graphics/artwork/spaceinvaders-full.png').convert_alpha()
+bezel_image = pygame.transform.rotozoom(bezel_image, 0, 2)
+bezel_image_rect = bezel_image.get_rect()
 
 # Sprites
 player = pygame.sprite.GroupSingle()
@@ -136,7 +139,7 @@ while running:
 
     if game_active:
         # Fill the screen with a color to wipe away anything from the last frame
-        screen.fill("black")
+        # screen.fill("black")
         screen.blit(background_image, (0, 0))
 
         # Update and draw sprites
@@ -158,6 +161,8 @@ while running:
         ship.draw(screen)
     else:
         intro()
+
+    screen.blit(bezel_image, (0, 0))
 
     pygame.display.update()
     frame_time = clock.tick(60)
