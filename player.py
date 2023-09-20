@@ -30,5 +30,4 @@ class Bullet(pygame.sprite.Sprite):
 
     def update(self):
         self.rect.y -= 20
-        print(self.rect.y)
         self.destroy()
