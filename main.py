@@ -1,7 +1,7 @@
 
 import pygame
 from player import Player, Bullet
-from aliens import Alien
+from aliens import Alien, Ship
 
 
 # pygame setup
@@ -11,6 +11,7 @@ clock = pygame.time.Clock()
 
 screen_centre = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 
+# Sprites
 player = pygame.sprite.GroupSingle()
 player.add(Player())
 bullet = pygame.sprite.GroupSingle()
@@ -20,6 +21,9 @@ aliens.add(Alien("alien_10", (400, 400)))
 aliens.add(Alien("alien_20", (300, 300)))
 aliens.add(Alien("alien_20", (200, 200)))
 aliens.add(Alien("alien_30", (100, 100)))
+ship = pygame.sprite.GroupSingle()
+ship.add(Ship())
+
 
 running = True
 
@@ -44,6 +48,8 @@ while running:
     bullet.draw(screen)
     aliens.update()
     aliens.draw(screen)
+    ship.update()
+    ship.draw(screen)
 
     pygame.display.update()
     clock.tick(60)
