@@ -13,7 +13,7 @@ class Alien(pygame.sprite.Sprite):
             self.kill()
 
     def update(self):
-        self.rect.x -= self.move
-        if self.rect.x < 50 or self.rect.x > 800:
+        self.rect.x += self.move
+        if self.rect.x < 50 or self.rect.x > 1100:
             self.move *= -1
         self.destroy()

@@ -15,7 +15,11 @@ player = pygame.sprite.GroupSingle()
 player.add(Player())
 bullet = pygame.sprite.GroupSingle()
 aliens = pygame.sprite.Group()
-aliens.add(Alien("alien_10", (300, 300)))
+aliens.add(Alien("alien_10", (500, 500)))
+aliens.add(Alien("alien_10", (400, 400)))
+aliens.add(Alien("alien_20", (300, 300)))
+aliens.add(Alien("alien_20", (200, 200)))
+aliens.add(Alien("alien_30", (100, 100)))
 
 running = True
 

@@ -5,7 +5,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.image = pygame.image.load('graphics/player/player_1.png').convert_alpha()
-        self.rect = self.image.get_rect(midbottom=(200, 600))
+        self.rect = self.image.get_rect(midbottom=(200, 700))
 
     def input(self):
         keys = pygame.key.get_pressed()
