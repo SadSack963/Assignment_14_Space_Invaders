@@ -6,16 +6,14 @@ class Alien(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.image.load(f'graphics/aliens/{name}.png').convert_alpha()
         self.rect = self.image.get_rect(center=start_pos)
-        self.move = -1
+        self.move_distance = 20
+        self.move_direction = -1
 
     def destroy(self):
         if self.rect.y > 600:
             self.kill()
 
     def update(self):
-        self.rect.x += self.move
-        if self.rect.left < 50 or self.rect.right > 1230:
-            self.move *= -1
         self.destroy()
 
 
