@@ -1,20 +1,18 @@
 
 import pygame
-from player import Player
+from player import Player, Bullet
 
 
 # pygame setup
 pygame.init()
 screen = pygame.display.set_mode((1280, 720))
 clock = pygame.time.Clock()
-# dt is delta time in seconds since last frame, used for framerate-independent physics
-dt = 0
 
 screen_centre = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 
 player = pygame.sprite.GroupSingle()
 player.add(Player())
-print(player)
+bullet = pygame.sprite.GroupSingle()
 
 running = True
 
@@ -24,36 +22,21 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        # Player fires a bullet
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE and not bullet.sprite:
+                bullet.add(Bullet(player.sprite.rect.center))
 
     # fill the screen with a color to wipe away anything from the last frame
     screen.fill("black")
 
+    # update and draw sprites
     player.update()
     player.draw(screen)
+    bullet.update()
+    bullet.draw(screen)
 
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_UP]:
-        # Shoot
-        # player_pos.y -= 300 * dt
-        pass
-    if keys[pygame.K_DOWN]:
-        # Start / Pause / Resume
-        # player_pos.y += 300 * dt
-        pass
-    if keys[pygame.K_LEFT]:
-        # Move left
-        # player_pos.x -= 300 * dt
-        pass
-    if keys[pygame.K_RIGHT]:
-        # Move right
-        # player_pos.x += 300 * dt
-        pass
-
-    # flip the display to put buffer on screen
-    pygame.display.flip()
-
-    # limits FPS to 60
-    # dt is delta time in seconds since last frame, used for framerate-independent physics
-    dt = clock.tick(60) / 1000
+    pygame.display.update()
+    clock.tick(60)
 
 pygame.quit()
