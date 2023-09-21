@@ -19,3 +19,6 @@ I also installed MAME https://www.mamedev.org/release.php, and got the emulation
 
 Eventually I found Tomohiro Nishikado's original paper sketch of the aliens (!) at https://www.cookandbecker.com/en/article/326/space-invaders-five-unknown-facts.html, so of course I had to replicate this exactly for my game, and I faithfully copied them in GIMP.
 
+Here's a picture of what I have so far. The play area is just a static image at the moment, but this is what I'm aiming for.
+
+<img src="graphics/artwork/Space_Invaders_1.png">

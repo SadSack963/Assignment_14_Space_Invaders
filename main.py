@@ -4,6 +4,9 @@ from player import Player, Bullet
 from aliens import Alien, Ship
 
 
+BEZEL_SCALE = 2
+
+
 def intro() -> None:
     pass
 
@@ -18,6 +21,7 @@ def aliens_move(group) -> None:
     :rtype:
     """
     for alien in group:
+        alien.animate()
         alien.rect.x += alien.move_direction * alien.move_distance
 
 
@@ -61,17 +65,34 @@ def alien_reverse(group) -> None:
 # pygame setup
 pygame.init()
 screen = pygame.display.set_mode((950, 990))
+screen_centre = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 clock = pygame.time.Clock()
 frame_time = 0  # Seconds since last frame
 
-screen_centre = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
+
+# Screen area available for gameplay (inside bezel)
+play_area_top_left = (55, 155)
+play_area_bottom_right = (425, 395)
+play_area_x_length = play_area_bottom_right[0] - play_area_top_left[0]
+play_area_y_length = play_area_bottom_right[1] - play_area_top_left[1]
+print(play_area_x_length, play_area_y_length)
+play_area = pygame.Surface((play_area_x_length, play_area_y_length))
+play_area_x0 = play_area_top_left[0] * BEZEL_SCALE
+play_area_y0 = play_area_top_left[1] * BEZEL_SCALE
+play_area_centre = pygame.Vector2(play_area.get_width() / 2, play_area.get_height() / 2)
+
+# ===== EXPERIMENT =====
+first_frame = pygame.image.load('Experiments/First_Frame.png').convert_alpha()
+first_frame = pygame.transform.rotozoom(first_frame, 0, 0.19)
+first_frame_rect = first_frame.get_rect()
+# ======================
 
 background_image = pygame.image.load('graphics/artwork/background.png').convert_alpha()
-background_image = pygame.transform.rotozoom(background_image, 90, 1)
+background_image = pygame.transform.rotozoom(background_image, 0, 0.5)
 background_image_rect = background_image.get_rect()
 
 bezel_image = pygame.image.load('graphics/artwork/spaceinvaders-full.png').convert_alpha()
-bezel_image = pygame.transform.rotozoom(bezel_image, 0, 2)
+bezel_image = pygame.transform.rotozoom(bezel_image, 0, BEZEL_SCALE)
 bezel_image_rect = bezel_image.get_rect()
 
 # Sprites
@@ -91,11 +112,11 @@ aliens_20_3 = pygame.sprite.Group()
 aliens_20_4 = pygame.sprite.Group()
 aliens_30_5 = pygame.sprite.Group()
 for x in range(150, 850, 100):
-    aliens_10_1.add(Alien("alien_10", (x, 500)))
-    aliens_10_2.add(Alien("alien_10", (x, 400)))
-    aliens_20_3.add(Alien("alien_20", (x, 300)))
-    aliens_20_4.add(Alien("alien_20", (x, 200)))
-    aliens_30_5.add(Alien("alien_30", (x, 100)))
+    aliens_10_1.add(Alien("crab", (x, 500)))
+    aliens_10_2.add(Alien("crab", (x, 400)))
+    aliens_20_3.add(Alien("octopus", (x, 300)))
+    aliens_20_4.add(Alien("octopus", (x, 200)))
+    aliens_30_5.add(Alien("squid", (x, 100)))
 
 ship = pygame.sprite.GroupSingle()
 ship.add(Ship())
@@ -109,7 +130,7 @@ pygame.time.set_timer(aliens_move_timer, aliens_move_time)
 
 
 running = True
-game_active = False
+game_play = False
 
 while running:
     # Poll for events
@@ -118,7 +139,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-        if game_active:
+        if game_play:
             # Player fires a bullet
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE and not bullet.sprite:
@@ -133,32 +154,37 @@ while running:
                     aliens_check()
 
         # Start a new game
-        if not game_active and event.type == pygame.KEYDOWN:
+        if not game_play and event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
-                game_active = True
+                game_play = True
 
-    if game_active:
+    if game_play:
         # Fill the screen with a color to wipe away anything from the last frame
         # screen.fill("black")
         screen.blit(background_image, (0, 0))
 
         # Update and draw sprites
-        player.update()
-        player.draw(screen)
-        bullet.update()
-        bullet.draw(screen)
-        aliens_10_1.update()
-        aliens_10_1.draw(screen)
-        aliens_10_2.update()
-        aliens_10_2.draw(screen)
-        aliens_20_3.update()
-        aliens_20_3.draw(screen)
-        aliens_20_4.update()
-        aliens_20_4.draw(screen)
-        aliens_30_5.update()
-        aliens_30_5.draw(screen)
-        ship.update()
-        ship.draw(screen)
+        # player.update()
+        # player.draw(play_area)
+        # bullet.update()
+        # bullet.draw(play_area)
+        # aliens_10_1.update()
+        # aliens_10_1.draw(play_area)
+        # aliens_10_2.update()
+        # aliens_10_2.draw(play_area)
+        # aliens_20_3.update()
+        # aliens_20_3.draw(play_area)
+        # aliens_20_4.update()
+        # aliens_20_4.draw(play_area)
+        # aliens_30_5.update()
+        # aliens_30_5.draw(play_area)
+        # ship.update()
+        # ship.draw(play_area)
+
+        play_area.blit(first_frame, (play_area.get_width() / 2 - first_frame.get_width() / 2, 0))
+        # Scale and blit the play area on the screen
+        play_area_surf = pygame.transform.rotozoom(play_area, 0, BEZEL_SCALE)
+        screen.blit(play_area_surf, (play_area_x0, play_area_y0))
     else:
         intro()
 
